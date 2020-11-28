@@ -1,12 +1,22 @@
 import { faCloudUploadAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { userContext } from "../../App";
 import Sidebar from "../Sidebar/Sidebar";
 import "./AddRent.css";
 
 const AddRent = () => {
+    const [loggedInUser , setLoggedInUser] = useContext(userContext)
     const [info , setInfo] = useState({});
+    const [file, setFile] = useState(null);
+    const history = useHistory();
     console.log(info);
+    const handleFileChange = (e) =>{
+        const newFile = e.target.files[0];
+        setFile(newFile);
+    }
+    
     const handleBlur = e => {
         const newInfo = { ...info };
         newInfo[e.target.name] = e.target.value;
@@ -15,6 +25,7 @@ const AddRent = () => {
     
 const handleHome = () => {
     const formData = new FormData()
+    formData.append('file', file);
     formData.append('serviceTitle', info.serviceTitle);
     formData.append('location', info.location);
     formData.append('price', info.price);
@@ -29,10 +40,13 @@ const handleHome = () => {
     .then(data => {
       alert("submitted")
       console.log(data)
+      history.push('/myrent');
     })
     .catch(error => {
       console.error(error)
     })
+    
+    
 }
     return (
         <div className="row">
@@ -42,7 +56,7 @@ const handleHome = () => {
             <div className="col-xl-10 col-lg-10 col-md-9 col-sm-8 col-12">
                 <div className="d-flex justify-content-between">
                     <h4 className="mt-4 py-3 ml-4">Add Rent House</h4>
-                    <h6 className="mt-5  mx-5 py-3">Sufi Ahmed</h6>
+                   <h6 className="mt-5  mx-5 py-3">{loggedInUser.name}</h6>
                 </div>
                 <div
                     className="bg-light py-2 rounded "
@@ -125,6 +139,7 @@ const handleHome = () => {
                                         <input
                                             type="file"
                                             className="form-control-file"
+                                            onChange={handleFileChange}
                                         />
                                         <FontAwesomeIcon
                                             icon={faCloudUploadAlt}

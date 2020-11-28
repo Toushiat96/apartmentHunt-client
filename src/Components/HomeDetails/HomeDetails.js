@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './HomeDetails.css'
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import HomeDetailsData from '../../Data/HomeDetailsData';
 import Header from '../Header/Header';
 
 const HomeDetails = () => {
 
-
+  const history =useHistory()
 
 
     const { homeDetailId } = useParams();
@@ -88,12 +88,14 @@ const Details = (props) => {
                         </p>
                     </div>
                     <div className="col-md-4 form-area">
-                        <form action="">
+                        <form action="http://localhost:5000/bookHome" method="POST">
                             <input type="text" name="text" id="t" placeholder="Full Name" /><br/>
                             <input type="number" name="number" id="n" placeholder="Phone Number"/><br/>
                             <input type="email" name="email" id="e" placeholder="Email Address" />
                             <textarea name="massage" id="" cols="30" rows="5" placeholder="Massage"></textarea>
-                            <button className="view">Request Booking</button>
+                            <button 
+                            className="view">Request Booking</button>
+                            
                         </form>
                     </div>
                 </div>

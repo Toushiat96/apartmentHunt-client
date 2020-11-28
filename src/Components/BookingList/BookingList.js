@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import BookSingleItem from "../BookSingleItem/BookSingleItem";
 import Sidebar from "../Sidebar/Sidebar";
@@ -63,7 +63,12 @@ const fakeListItems = [
     },
 ];
 const BookingList = () => {
-    const [fakeList, setFakeList] = useState(fakeListItems);
+    const [bookData ,setbookData] = useState([]);
+    useEffect(() =>{
+    fetch('http://localhost:5000/booklistHome')
+    .then(response =>response.json())
+    .then(data =>setbookData(data))
+    },[])
 
     return (
         <div className="row">
@@ -88,8 +93,14 @@ const BookingList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {fakeList.map((item) => (
-                                    <BookSingleItem key={item.id} item={item} />
+                                {bookData.map((item) => (
+                                    <tr>
+                                    <td>{item.text}</td>
+                                <td>{item.email}</td>
+                                <td>{item.number}</td>
+                                <td>{item.massage}</td>
+                                    <td>Done</td>
+                                    </tr>
                                 ))}
                             </tbody>
                         </table>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Apartment.css'
 import ApertmentData from '../../Data/ApertmentData';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +14,12 @@ import { Link } from 'react-router-dom';
 
 
 const Apartment = () => {
-    const [data, setData] = useState(ApertmentData)
+    const [data, setData] = useState([])
+    useEffect( () =>{
+    fetch('http://localhost:5000/renthome')
+    .then(res => res.json())
+    .then(data =>setData(data))
+    }, [])
 
 
     return (
@@ -54,7 +59,7 @@ const SingleApart = (props) => {
 
     const classes = useStyles();
 
-    const { name, img, price, location, bed, bath , id } = props.apartment;
+    const { serviceTitle, image, price, location, bedroom, bathroom , _id } = props.apartment;
 
 
     return (
@@ -67,28 +72,28 @@ const SingleApart = (props) => {
                                 component="img"
                                 alt="Contemplative Reptile"
                                 height="140"
-                                image={img}
+                                image={`data:image/png;base64,${image.img}`}
                                 title="Contemplative Reptile"
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    {name}
+                                    {serviceTitle}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p">
                                     <i class="fas fa-map-marker-alt"></i> {location}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    <i class="fas fa-bed"></i> {bed}
+                                    <i class="fas fa-bed"></i> {bedroom}
                                     <br />
-                                    <i class="fas fa-bath"></i> {bath}
+                                    <i class="fas fa-bath"></i> {bathroom}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardActions>
-                            <h3>$ {price} </h3>
+                            <h3> {price} </h3>
                             <Button size="small" color="primary" >
                                 <div className="butt">
-                                    <Link to={`/apartment/${id}`}>
+                                    <Link to={`/apartment/${_id}`}>
                                         <button className="view">View Details</button>
                                     </Link>
                                 </div>

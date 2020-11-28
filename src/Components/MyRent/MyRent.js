@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { userContext } from "../../App";
 import Sidebar from "../Sidebar/Sidebar";
 import "./MyRent.css";
 
@@ -11,7 +12,13 @@ const fakeMyRentList = [
 ];
 
 const MyRent = () => {
-    const [fakeMyRent, setFakeMyRent] = useState(fakeMyRentList);
+  const [myRent , setMyrent] = useState([])
+  const [loggedInUser, setLoggedInUser] = useContext(userContext)
+  useEffect( () => {
+  fetch('http://localhost:5000/renthome?email='+loggedInUser.email)
+  .then((response) =>response.json())
+  .then(data => setMyrent(data))
+  },[])
     return (
         <div className="row">
             <div className="col-xl-2  col-md-3 col-sm-12 col-12">
@@ -20,7 +27,7 @@ const MyRent = () => {
             <div className="col-xl-10  col-md-9 col-sm-12 col-12">
                 <div className="d-flex justify-content-between">
                     <h4 className="mt-4 py-3 ml-4">My Rent List</h4>
-                    <h6 className="mt-5  mx-5 py-3">Sufi Ahmed</h6>
+    <h6 className="mt-5  mx-5 py-3">{loggedInUser.name}</h6>
                 </div>
                 <div className="table-wrapper">
                     <div className="table-container">
@@ -33,9 +40,9 @@ const MyRent = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {fakeMyRent.map((item) => (
+                                {myRent.map((item) => (
                                     <tr>
-                                        <td>{item.name}</td>
+                                        <td>{item.serviceTitle}</td>
                                         <td>{item.price}</td>
                                         <td>
                                             <button className=" details-btn">

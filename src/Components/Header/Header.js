@@ -33,7 +33,7 @@ const Header = () => {
 							</li>
 
 							<li class="nav-item">
-								<Link class="nav-link" href="event" to="/event">Event</Link>
+								<Link class="nav-link" href="event" to="/myrent">My Rent</Link>
 							</li>
 							<li class="nav-item">
 								<Link class="nav-link" href="contact" to="/contact">Contact</Link>
